@@ -1,24 +1,22 @@
 package com.scully.springbatchpractice.listener;
 
+import com.scully.springbatchpractice.Producer;
 import com.scully.springbatchpractice.model.Person;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.listener.JobExecutionListenerSupport;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JobCompletionNotificationListener extends JobExecutionListenerSupport {
 
   private final JdbcTemplate jdbcTemplate;
-
-  @Autowired
-  public JobCompletionNotificationListener(JdbcTemplate jdbcTemplate) {
-    this.jdbcTemplate = jdbcTemplate;
-  }
+  private final Producer producer;
 
   @Override
   public void afterJob(JobExecution jobExecution) {
@@ -29,7 +27,13 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
           (rs, row) -> new Person(
               rs.getString(1),
               rs.getString(2))
-      ).forEach(person -> log.info("Found <" + person + "> in the database."));
+      ).forEach(person -> {
+        log.info("Found <" + person + "> in the database.");
+
+        this.producer.sendMessage(person);
+
+
+      });
     }
   }
 }
