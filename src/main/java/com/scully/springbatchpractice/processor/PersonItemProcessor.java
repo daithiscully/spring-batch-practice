@@ -1,8 +1,12 @@
-package com.scully.springbatchpractice;
+package com.scully.springbatchpractice.processor;
 
+import com.scully.springbatchpractice.model.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
+/**
+ * Capitalizes the user's names
+ */
 @Slf4j
 public class PersonItemProcessor implements ItemProcessor<Person, Person> {
 

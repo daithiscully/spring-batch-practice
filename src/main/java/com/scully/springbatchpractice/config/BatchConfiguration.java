@@ -1,5 +1,8 @@
-package com.scully.springbatchpractice;
+package com.scully.springbatchpractice.config;
 
+import com.scully.springbatchpractice.listener.JobCompletionNotificationListener;
+import com.scully.springbatchpractice.model.Person;
+import com.scully.springbatchpractice.processor.PersonItemProcessor;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -26,8 +29,7 @@ public class BatchConfiguration {
   private final JobBuilderFactory jobBuilderFactory;
   private final StepBuilderFactory stepBuilderFactory;
 
-  @Bean
-  public FlatFileItemReader<Person> reader() {
+  private FlatFileItemReader<Person> reader() {
     BeanWrapperFieldSetMapper<Person> mapper = new BeanWrapperFieldSetMapper<>();
     mapper.setTargetType(Person.class);
     return new FlatFileItemReaderBuilder<Person>()
@@ -57,6 +59,7 @@ public class BatchConfiguration {
         .end()
         .build();
   }
+
   @Bean
   public PersonItemProcessor processor() {
     return new PersonItemProcessor();

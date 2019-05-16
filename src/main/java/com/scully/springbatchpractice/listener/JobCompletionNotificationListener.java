@@ -1,5 +1,6 @@
-package com.scully.springbatchpractice;
+package com.scully.springbatchpractice.listener;
 
+import com.scully.springbatchpractice.model.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class JobCompletionNotificationListener extends JobExecutionListenerSupport {
-
 
   private final JdbcTemplate jdbcTemplate;
 

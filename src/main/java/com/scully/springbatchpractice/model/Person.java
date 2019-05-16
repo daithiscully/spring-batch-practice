@@ -1,4 +1,4 @@
-package com.scully.springbatchpractice;
+package com.scully.springbatchpractice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
