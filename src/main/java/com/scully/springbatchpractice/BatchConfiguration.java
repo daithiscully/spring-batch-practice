@@ -40,11 +40,6 @@ public class BatchConfiguration {
   }
 
   @Bean
-  public PersonItemProcessor processor() {
-    return new PersonItemProcessor();
-  }
-
-  @Bean
   public JdbcBatchItemWriter<Person> writer(DataSource dataSource) {
     return new JdbcBatchItemWriterBuilder<Person>()
         .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
@@ -54,17 +49,21 @@ public class BatchConfiguration {
   }
 
   @Bean
-  public Job importUserJob(JobCompletionNotificationListener listener, Step step1) {
+  public Job importUserJob(JobCompletionNotificationListener listener, Step step) {
     return jobBuilderFactory.get("importUserJob")
         .incrementer(new RunIdIncrementer())
         .listener(listener)
-        .flow(step1)
+        .flow(step)
         .end()
         .build();
   }
+  @Bean
+  public PersonItemProcessor processor() {
+    return new PersonItemProcessor();
+  }
 
   @Bean
-  public Step step1(JdbcBatchItemWriter<Person> writer) {
+  public Step step(JdbcBatchItemWriter<Person> writer) {
     return stepBuilderFactory.get("step1")
         .<Person, Person>chunk(10)
         .reader(reader())
