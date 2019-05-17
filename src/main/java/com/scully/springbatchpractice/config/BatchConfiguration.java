@@ -5,6 +5,7 @@ import com.scully.springbatchpractice.model.Person;
 import com.scully.springbatchpractice.processor.PersonItemProcessor;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
+@Slf4j
 @Configuration
 @EnableBatchProcessing
 @RequiredArgsConstructor
