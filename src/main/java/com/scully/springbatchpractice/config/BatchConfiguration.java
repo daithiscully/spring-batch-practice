@@ -12,7 +12,6 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
@@ -32,7 +31,7 @@ public class BatchConfiguration {
   private final StepBuilderFactory stepBuilderFactory;
 
   private FlatFileItemReader<Person> reader() {
-    BeanWrapperFieldSetMapper<Person> mapper = new BeanWrapperFieldSetMapper<>();
+    var mapper = new BeanWrapperFieldSetMapper<Person>();
     mapper.setTargetType(Person.class);
     return new FlatFileItemReaderBuilder<Person>()
         .name("personItemReader")
@@ -46,7 +45,8 @@ public class BatchConfiguration {
   @Bean
   public JdbcBatchItemWriter<Person> writer(DataSource dataSource) {
     return new JdbcBatchItemWriterBuilder<Person>()
-        .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
+        .beanMapped()
+//        .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
         .sql("INSERT INTO people (first_name, last_name) VALUES (:firstName, :lastName)")
         .dataSource(dataSource)
         .build();

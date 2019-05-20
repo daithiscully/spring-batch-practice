@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class Producer {
 
-  private static final String TOPIC = "people";
-
   private final KafkaTemplate<String, Person> kafkaTemplate;
 
   public void sendMessage(Person person) {
